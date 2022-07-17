@@ -1,0 +1,17 @@
+El departamento de recursos humanos ha solicitado un informe de todos los 
+empleados y sus ID de trabajo. Muestre el apellido concatenado con la ID del 
+trabajo (separados por una coma y un espacio) y nombre la columna Employee and
+Title.
+
+
+SELECT last_name || ', ' || job_id AS 'Employee and Title';
+
+
+_______________________________________________________________________________
+
+El departamento de recursos humanos quiere encabezados de columna más descriptivos
+para su informe sobre los empleados (consulta 1.1). Nombre los encabezados de 
+columna Emp #, Employee, Job y Hire Date, respectivamente
+
+SELECT employee_id AS 'Emp #', first_name || ' ' || last_name AS 'Employee', job_id AS 'Job', hire_date AS 'Hire Date'
+FROM employees;

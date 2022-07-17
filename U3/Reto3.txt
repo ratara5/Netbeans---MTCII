@@ -1,0 +1,39 @@
+RETO 3
+CONSULTAS
+
+1.
+SELECT ID_Compra,Cantidad,Proveedor,Fecha
+FROM Compra
+WHERE Cantidad=10
+ORDER BY ID_Compra;
+
+2.
+SELECT mc.ID_MaterialConstruccion,
+mc.Nombre_Material,
+c.Cantidad,
+c.Pagado
+FROM MaterialConstruccion mc
+INNER JOIN Compra c
+ON mc.ID_MaterialConstruccion=c.ID_MaterialConstruccion
+WHERE Nombre_Material='Bambu';
+
+3.
+SELECT AVG(Precio_Unidad) AS 'Promedio Precio Unidad',
+MIN(Precio_Unidad) AS 'Minimo Precio Unidad',
+MAX(Precio_Unidad) AS 'Maximo Precio Unidad',
+SUM(Precio_Unidad) AS 'Suma Precio Unidad'
+FROM MaterialConstruccion;
+
+4.
+SELECT 'El id de material de construccion  ' || c.ID_MaterialConstruccion || ' se necesita una cantidad de '|| c.Cantidad || ' y poses un valor de por unidad de ' || mc.Precio_Unidad AS 'Informe'
+ FROM MaterialConstruccion mc
+ INNER JOIN Compra c
+ ON mc.ID_MaterialConstruccion = c.ID_MaterialConstruccion
+ WHERE mc.ID_MaterialConstruccion = 8
+
+5.
+SELECT ID_Lider,Nombre,Salario
+FROM Lider
+GROUP BY ID_Lider
+HAVING Salario>20000
+

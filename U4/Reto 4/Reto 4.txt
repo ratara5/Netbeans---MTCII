@@ -1,0 +1,423 @@
+//Estructuras de datos (colecciones)
+import java.util.ArrayList;
+//Estructura de datos
+
+//Librerías para SQL y Base de Datos
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.DriverManager;
+
+//Librerías para bases de datos
+import java.sql.SQLException;
+
+public class VistaRequerimientosReto4 {
+
+    public static final ControladorRequerimientosReto4 controlador = new ControladorRequerimientosReto4();
+
+    public static void requerimiento1() {
+
+        System.out.println("-----15 Proyectos Mas Gasto-------");
+
+        try {
+
+            ArrayList<Requerimiento1> rankingProyectosCompras = controlador.consultarProyectosCompras10();
+
+            //Encabezado del resultado
+            System.out.println("ID_Proyecto Clasificación Gasto_Compras Serial");
+
+            //Cada VO cargado, mostrarlo en la vista
+            for (Requerimiento1 proyectoRankeado : rankingProyectosCompras) {
+                System.out.printf("%d %s %d %s %n",
+                        proyectoRankeado.getIdProyecto(),
+                        proyectoRankeado.getClasificacion(),
+                        Math.round(proyectoRankeado.getGastoCompras()),
+                        proyectoRankeado.getSerial()
+                );
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Ha ocurrido un error!" + e.getMessage());
+        }
+
+    }
+
+    public static void requerimiento2() {
+
+        System.out.println("-----Ranking Bancos Con Menor Área (Área Proyectos)-------");
+
+        try {
+
+            ArrayList<Requerimiento2> rankingBancosArea = controlador.consultarBancosRankeadosAreaPromedio();
+
+            //Encabezado del resultado
+            System.out.println("Banco_Vinculado Area_Promedio");
+
+            //Cada VO cargado, mostrarlo en la vista
+            for (Requerimiento2 banco : rankingBancosArea) {
+                System.out.printf("%s %f %n",
+                        banco.getBancoVinculado(),
+                        banco.getAreaPromedio()
+                );
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Ha ocurrido un error!" + e.getMessage());
+        }
+
+    }
+
+    public static void requerimiento3() {
+
+        System.out.println("-----Ranking Materiales Importados (Compras)-------");
+
+        try {
+
+            ArrayList<Requerimiento3> rankingMaterialesImportados = controlador.consultarMaterialesRankeadosCompras();
+
+            //Encabezado del resultado
+            System.out.println("Nombre_Material Importado No_Compras");
+
+            //Cada VO cargado, mostrarlo en la vista
+            for (Requerimiento3 material : rankingMaterialesImportados) {
+                System.out.printf("%s %s %d %n",
+                        material.getNombreMaterial(),
+                        material.getImportado(),
+                        material.getNoCompras()
+                );
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Ha ocurrido un error!" + e.getMessage());
+        }
+
+    }
+
+}
+
+public class JDBCUtilities {
+
+    //Atributos de clase para gestión de conexión con la base de datos    
+    private static final String UBICACION_BD = "ProyectosConstruccion.db";    
+      
+    public static Connection getConnection() throws SQLException {
+        String url = "jdbc:sqlite:" + UBICACION_BD;        
+        return DriverManager.getConnection(url);
+    }
+
+}
+
+public class Requerimiento1 {
+
+    private Integer idProyecto;
+    private String clasificacion;
+    private Double gastoCompras;
+    private String serial;
+
+    public Requerimiento1() {
+
+    }
+
+    public Requerimiento1(Integer id_proyecto, String clasificacion, String serial) {
+        this.idProyecto = id_proyecto;
+        this.clasificacion = clasificacion;
+        this.serial = serial;
+    }
+
+    public Requerimiento1(Integer id_proyecto, String clasificacion, String serial, Double gastoCompras) {
+        this(id_proyecto, clasificacion, serial);
+        this.gastoCompras = gastoCompras;
+    }
+
+    public Integer getIdProyecto() {
+        return idProyecto;
+    }
+
+    public void setIdProyecto(Integer idProyecto) {
+        this.idProyecto = idProyecto;
+    }
+
+    public String getClasificacion() {
+        return clasificacion;
+    }
+
+    public void setClasificacion(String clasificacion) {
+        this.clasificacion = clasificacion;
+    }
+
+    public Double getGastoCompras() {
+        return gastoCompras;
+    }
+
+    public void setGastoCompras(Double gastoCompras) {
+        this.gastoCompras = gastoCompras;
+    }
+
+    public String getSerial() {
+        return serial;
+    }
+
+    public void setSerial(String serial) {
+        this.serial = serial;
+    }
+
+}
+
+public class Requerimiento2 {
+
+    private String bancoVinculado;
+    private Double areaPromedio;
+
+    public Requerimiento2() {
+
+    }
+
+    public Requerimiento2(String bancoVinculado, Double areaPromedio) {
+        this.bancoVinculado = bancoVinculado;
+        this.areaPromedio = areaPromedio;
+
+    }
+
+    public String getBancoVinculado() {
+        return bancoVinculado;
+    }
+
+    public void setBancoVinculado(String bancoVinculado) {
+        this.bancoVinculado = bancoVinculado;
+    }
+
+    public Double getAreaPromedio() {
+        return areaPromedio;
+    }
+
+    public void setAreaPromedio(Double areaPromedio) {
+        this.areaPromedio = areaPromedio;
+    }
+
+}
+
+
+public class Requerimiento3 {
+
+    private String nombreMaterial;
+    private String importado;
+    private Integer noCompras;
+
+    public Requerimiento3() {
+
+    }
+
+    public Requerimiento3(String nombreMaterial, String importado, Integer noCompras) {
+        this.nombreMaterial = nombreMaterial;
+        this.importado = importado;
+        this.noCompras = noCompras;
+    }
+
+    public String getNombreMaterial() {
+        return nombreMaterial;
+    }
+
+    public void setNombreMaterial(String nombreMaterial) {
+        this.nombreMaterial = nombreMaterial;
+    }
+
+    public String getImportado() {
+        return importado;
+    }
+
+    public void setImportado(String importado) {
+        this.importado = importado;
+    }
+
+    public Integer getNoCompras() {
+        return noCompras;
+    }
+
+    public void setNoCompras(Integer noCompras) {
+        this.noCompras = noCompras;
+    }
+
+}
+
+public class Requerimiento1Dao {
+
+    public ArrayList<Requerimiento1> rankingProyectosComprasDescendente10() throws SQLException {
+
+        ArrayList<Requerimiento1> respuesta = new ArrayList<Requerimiento1>();
+        Connection conexion = JDBCUtilities.getConnection();
+
+        try {
+
+            String consulta = "select c.ID_Proyecto,"
+                    + "p.Clasificacion,"
+                    + "sum(c.Cantidad * m.Precio_Unidad) as Gasto_Compras,"
+                    + "p.Serial     "
+                    + "from Compra c "
+                    + "join MaterialConstruccion m "
+                    + "on c.ID_MaterialConstruccion = m.ID_MaterialConstruccion "
+                    + "join Proyecto p "
+                    + "on p.ID_Proyecto = c.ID_Proyecto "
+                    + "group by c.ID_Proyecto "
+                    + "order by Gasto_Compras desc "
+                    + "limit 15;";
+
+            PreparedStatement statement = conexion.prepareStatement(consulta);
+            ResultSet resultSet = statement.executeQuery();
+
+            //Recorrer los registros en los VO específicos
+            while (resultSet.next()) {
+                Requerimiento1 proyectoRankeadoCompras = new Requerimiento1();
+                proyectoRankeadoCompras.setIdProyecto(resultSet.getInt("ID_Proyecto"));
+                proyectoRankeadoCompras.setClasificacion(resultSet.getString("Clasificacion"));
+                proyectoRankeadoCompras.setGastoCompras(resultSet.getDouble("Gasto_Compras"));
+                proyectoRankeadoCompras.setSerial(resultSet.getString("Serial"));
+
+                //Se agrega cada registro como un objeto del ArrayList que contiene la consulta
+                respuesta.add(proyectoRankeadoCompras);
+            }
+
+            resultSet.close();
+            statement.close();
+
+        } catch (SQLException e) {
+            System.err.println("Error consultando ranking de los 10 proyectos con mayor gasto por compras: " + e);
+        } finally {
+            if (conexion != null) {
+                conexion.close();
+            }
+        }
+
+        //Retornar la colección de vo's
+        return respuesta;
+
+    }
+
+}
+
+public class Requerimiento2Dao {
+
+    //Obtener los 10 proyectos rankeados según las compras
+    public ArrayList<Requerimiento2> rankingBancosAreaPromedioDescendente() throws SQLException {
+
+        ArrayList<Requerimiento2> respuesta = new ArrayList<Requerimiento2>();
+        Connection conexion = JDBCUtilities.getConnection();
+
+        try {
+
+            String consulta = "select p.Banco_Vinculado, AVG(tp.Area_Max) as Area_Promedio "
+                    + "from Proyecto p "
+                    + "inner join Tipo tp on "
+                    + "p.ID_Tipo = tp.ID_Tipo "
+                    + "group by p.Banco_Vinculado "
+                    + "order by Area_Promedio; ";
+
+            PreparedStatement statement = conexion.prepareStatement(consulta);
+            ResultSet resultSet = statement.executeQuery();
+
+            //Recorrer los registros en los VO específicos
+            while (resultSet.next()) {
+                Requerimiento2 bancoRankeadoAreaPromedio = new Requerimiento2();
+                bancoRankeadoAreaPromedio.setBancoVinculado(resultSet.getString("Banco_Vinculado"));
+                bancoRankeadoAreaPromedio.setAreaPromedio(resultSet.getDouble("Area_Promedio"));
+
+                //Se agrega cada registro como un objeto del ArrayList que contiene la consulta
+                respuesta.add(bancoRankeadoAreaPromedio);
+            }
+
+            resultSet.close();
+            statement.close();
+
+        } catch (SQLException e) {
+            System.err.println("Error consultando ranking de bancos según el área promedio de proyectos respaldados: " + e);
+        } finally {
+            if (conexion != null) {
+                conexion.close();
+            }
+        }
+
+        //Retornar la colección de vo's
+        return respuesta;
+
+    }
+
+}
+
+public class Requerimiento3Dao {
+
+    //Obtener los 10 proyectos rankeados según las compras
+    public ArrayList<Requerimiento3> rankingMaterialesComprasDescendente() throws SQLException {
+
+        ArrayList<Requerimiento3> respuesta = new ArrayList<Requerimiento3>();
+        Connection conexion = JDBCUtilities.getConnection();
+
+        try {
+
+            String consulta = "select m.Nombre_Material, "
+                    + "m.Importado, "
+                    + "COUNT(*)No_Compras "
+                    + "from MaterialConstruccion m "
+                    + "join Compra c on "
+                    + "m.ID_MaterialConstruccion = c.ID_MaterialConstruccion "
+                    + "where m.Importado = 'No' "
+                    + "group by c.ID_MaterialConstruccion "
+                    + "order by         "
+                    + "No_Compras;";
+
+            PreparedStatement statement = conexion.prepareStatement(consulta);
+            ResultSet resultSet = statement.executeQuery();
+
+            //Recorrer los registros en los VO específicos
+            while (resultSet.next()) {
+                Requerimiento3 materialRankeadoCompras = new Requerimiento3();
+                materialRankeadoCompras.setNombreMaterial(resultSet.getString("Nombre_Material"));
+                materialRankeadoCompras.setImportado(resultSet.getString("Importado"));
+                materialRankeadoCompras.setNoCompras(resultSet.getInt("No_Compras"));
+
+                //Se agrega cada registro como un objeto del ArrayList que contiene la consulta
+                respuesta.add(materialRankeadoCompras);
+            }
+
+            resultSet.close();
+            statement.close();
+
+        } catch (SQLException e) {
+            System.err.println("Error consultando ranking de materiales importados según número de compras: " + e);
+        } finally {
+            if (conexion != null) {
+                conexion.close();
+            }
+        }
+
+        //Retornar la colección de vo's
+        return respuesta;
+
+    }
+
+}
+
+public class ControladorRequerimientosReto4 {       
+    
+    private final Requerimiento1Dao proyectoRankeadoDao;
+    private final Requerimiento2Dao bancoRankeadoAreaPromedioDao;
+    private final Requerimiento3Dao materialRankeadoComprasDao;
+
+    public ControladorRequerimientosReto4(){
+        this.proyectoRankeadoDao = new Requerimiento1Dao();
+        this.bancoRankeadoAreaPromedioDao = new Requerimiento2Dao();       
+        this.materialRankeadoComprasDao = new Requerimiento3Dao();
+    }
+
+    public ArrayList<Requerimiento1> consultarProyectosCompras10() throws SQLException {
+        return this.proyectoRankeadoDao.rankingProyectosComprasDescendente10();
+    }
+    
+    public ArrayList<Requerimiento2> consultarBancosRankeadosAreaPromedio() throws SQLException {
+        return this.bancoRankeadoAreaPromedioDao.rankingBancosAreaPromedioDescendente();
+    }
+
+    public ArrayList<Requerimiento3> consultarMaterialesRankeadosCompras() throws SQLException {
+        return this.materialRankeadoComprasDao.rankingMaterialesComprasDescendente();
+    }
+
+    
+}

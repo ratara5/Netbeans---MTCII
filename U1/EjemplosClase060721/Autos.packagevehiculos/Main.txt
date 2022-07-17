@@ -1,0 +1,39 @@
+import static Autos.Vehiculo.indiceCocheMBarato;
+import java.util.Scanner;
+
+public class Main {
+    
+    public static void main(String[] args) {
+        
+        String marca, modelo;
+        float precio;
+        int nVehiculos, indiceBarato;
+        
+        Scanner entrada = new Scanner(System.in);
+        
+        System.out.print("Digite la cantidad de autos: ");
+        nVehiculos = entrada.nextInt();
+//CREAR EL OBJETO
+        Vehiculo coches[] = new Vehiculo[nVehiculos];
+        
+        for(int i=0; i<coches.length; i++){
+            entrada.nextLine();
+            System.out.println("Características del " + "Vehiculo" +(i+1)+": ");
+            System.out.print("Ingrese la marca: ");
+            marca = entrada.nextLine();
+            System.out.print("Ingrese el modelo: ");
+            modelo = entrada.nextLine();
+            System.out.print("Ingrese el precio: ");
+            precio = entrada.nextFloat();
+               
+            
+            coches[i] = new Vehiculo(marca, modelo, precio);
+        }
+indiceBarato = indiceCocheMBarato(coches);
+        
+        System.out.println("El vehiculo más barato");
+        System.out.println(coches[indiceBarato].mostrarDatos());
+        
+    }
+    
+}
